@@ -7,7 +7,7 @@
 
 (defn withdraw [account amount]
   (dosync
-    (if (> amount @account) (throw (new java.lang.RuntimeException "Amount not covered")))
+    (if (> amount @account) (throw (Exception. "Amount not covered")))
     (alter account - amount)))
 
 (defn transfer [from-account to-account amount]
