@@ -1,0 +1,3 @@
+storehouse:fac(10).
+
+echo:go().
