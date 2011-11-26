@@ -13,7 +13,7 @@
     (assoc shelf :products (conj (shelf :products) product))))
 
 (defn take-out [shelf product]
-    (assoc shelf :products (remove '() (shelf :products) product )))
+    (assoc shelf :products (- (shelf :products) (list product))))
 
 (def s1 (new-shelf 2))
 (def s2 (put-in s1 :book))
