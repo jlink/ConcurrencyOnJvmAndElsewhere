@@ -1,5 +1,10 @@
 (ns storehouse)
 
+(defn remove [result list element]
+  (if (empty? list)
+    result
+    list ))
+
 (defn new-shelf[capacity] {:products '() :capacity capacity})
 
 (defn put-in [shelf product]
@@ -7,9 +12,16 @@
     (throw (Exception. "Shelf is full."))
     (assoc shelf :products (conj (shelf :products) product))))
 
-(def s1 (new-shelf 1))
+(defn take-out [shelf product]
+    (assoc shelf :products (remove '() (shelf :products) product )))
+
+(def s1 (new-shelf 2))
 (def s2 (put-in s1 :book))
+(def s3 (put-in s2 :printer))
 
-(println s2)
+(println s3)
 
-(put-in s2 :shoebox)
+(def s4 (take-out s3 :book))
+
+(println s4)
+(println "DOES NOT WORK!")
