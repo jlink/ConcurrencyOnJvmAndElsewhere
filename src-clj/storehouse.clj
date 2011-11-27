@@ -63,4 +63,8 @@
 (println "Move book from :a to :b")
 (move store "a book" :a :b )
 (println @store)
-
+(println "Try to move a car from :a to :b")
+(try
+  (move store "a car" :a :b )
+  (catch Exception e (println "Move failed: ", (.getMessage e))))
+(println @store)
