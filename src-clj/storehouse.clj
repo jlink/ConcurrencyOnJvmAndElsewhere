@@ -35,15 +35,32 @@
           shelf (shelf-map shelf-name)]
       (alter store replace-shelf shelf-name shelf))))
 
-(def store (empty-storehouse))
+(defn put-in-shelf [store shelf-name product]
+  (dosync
+    (let [changed-shelf (put-in (@store shelf-name) product)]
+      (update-shelf store {shelf-name changed-shelf}))))
 
+(defn take-from-shelf [store shelf-name product]
+  (dosync
+    (let [org-shelf (@store shelf-name)
+          changed-shelf (take-out org-shelf product)]
+      (if (= org-shelf changed-shelf)
+        (throw (Exception. (str "No such product in shelf: " product)))
+        (update-shelf store {shelf-name changed-shelf})))))
+
+(defn move [store product from-name to-name]
+  (dosync
+    (put-in-shelf store to-name product)
+    (take-from-shelf store from-name product)))
+
+(def store (empty-storehouse))
 (new-shelf store :a 2)
 (new-shelf store :b 3)
+(put-in-shelf store :a "a book")
+(put-in-shelf store :b "a lego block")
 
 (println @store)
-
-(def shelf-a (put-in (@store :a) "a book"))
-(update-shelf store {:a shelf-a} )
-
+(println "Move book from :a to :b")
+(move store "a book" :a :b )
 (println @store)
 
